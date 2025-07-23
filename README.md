@@ -1,11 +1,12 @@
 # Hotel-order-system-
 Key Features:
 
-1.  User Details Input:**
+1.  User Details Input:
     Name
     Date of Birth
     Mobile number
-2.  Menu Display:
+    
+3.  Menu Display:
   - 20 items split into Fast Food and Regular meals with prices
  
 3.  Ordering System:
@@ -16,10 +17,9 @@ Key Features:
   - Allows multiple items and reordering
  
 
- 
- 
 4.  Birthday Offer:
   - If the date matches the user’s birthday, a 20% discount is applied
+  
 5.  Receipt Generation:
   - Displays seat number, order number, time
  
