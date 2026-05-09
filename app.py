@@ -88,9 +88,21 @@ def serve_static(path):
 # API: MENU
 # ═════════════════════════════════════════════════════════════════════════════
 
+# Defines display order and human-readable labels for all categories
+CATEGORY_META = {
+    "starters":  "Starters",
+    "fast_food":  "Fast Food",
+    "non_veg":    "Non Veg",
+    "regular":    "Veg Mains",
+    "breads":     "Breads",
+    "soups":      "Soups",
+    "beverages":  "Beverages",
+    "desserts":   "Desserts",
+}
+
 @app.route("/api/menu", methods=["GET"])
 def get_menu():
-    """Fetch all available menu items, grouped by category."""
+    """Fetch all available menu items, grouped by category dynamically."""
     try:
         conn = get_db()
         cursor = conn.cursor(dictionary=True)
@@ -106,11 +118,25 @@ def get_menu():
         for row in rows:
             row["price"] = float(row["price"])
 
-        menu = {
-            "fast_food": [r for r in rows if r["category"] == "fast_food"],
-            "regular": [r for r in rows if r["category"] == "regular"],
-        }
-        return jsonify(menu)
+        # Group items dynamically — works for any category, current or future
+        grouped = {}
+        for row in rows:
+            cat = row["category"]
+            grouped.setdefault(cat, [])
+            grouped[cat].append(row)
+
+        # Build response in defined display order; unknown categories go last
+        menu = {}
+        for cat in CATEGORY_META:
+            if cat in grouped:
+                menu[cat] = grouped[cat]
+        for cat in grouped:
+            if cat not in menu:
+                menu[cat] = grouped[cat]
+
+        # Also include category labels so the frontend can display nice headings
+        labels = {k: v for k, v in CATEGORY_META.items() if k in menu}
+        return jsonify({"menu": menu, "labels": labels})
 
     except Exception as e:
         print(f"Error fetching menu: {e}")
