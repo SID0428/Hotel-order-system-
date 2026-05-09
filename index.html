@@ -50,11 +50,8 @@
         <p class="section-desc">Pick your favourites and add them to your cart</p>
       </div>
 
-      <!-- Category Tabs -->
-      <div class="menu-tabs">
-        <button class="menu-tab active" data-category="fast_food" onclick="switchCategory('fast_food', this)">🍔 Fast Food</button>
-        <button class="menu-tab" data-category="regular" onclick="switchCategory('regular', this)">🍛 Regular</button>
-      </div>
+      <!-- Category Tabs (built dynamically from API) -->
+      <div class="menu-tabs" id="menu-tabs"></div>
 
       <!-- Menu Grid -->
       <div id="menu-grid" class="menu-grid"></div>
